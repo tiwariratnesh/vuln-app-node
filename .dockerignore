@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+VULNERABILITY_MATRIX.md
+.env
+.DS_Store
+uploads/
+extracted/
+archives/
+logs/
+*.log
+*.md
+docker-compose.yml
+k8s/
+

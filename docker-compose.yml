@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  vuln-app:
+    build: .
+    container_name: vuln-app-node
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=vulnapp
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=vulnapp
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - mysql
+      - redis
+    networks:
+      - vuln-network
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:13.2-alpine
+    container_name: vuln-postgres
+    environment:
+      - POSTGRES_DB=vulnapp
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - vuln-network
+
+  mysql:
+    image: mysql:5.7.33
+    container_name: vuln-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=vulnapp
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - vuln-network
+
+  redis:
+    image: redis:6.0.10-alpine
+    container_name: vuln-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - vuln-network
+
+networks:
+  vuln-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  mysql-data:
+

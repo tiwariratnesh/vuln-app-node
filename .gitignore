@@ -1,0 +1,11 @@
+node_modules/
+uploads/
+extracted/
+archives/
+*.log
+.env
+.DS_Store
+*.swp
+*.swo
+*~
+
